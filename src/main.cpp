@@ -1,8 +1,14 @@
+
+
+
+
 #include <Arduino.h>
 #include <WiFi.h>
 #include <ArduinoJson.h>
 #include <PubSubClient.h>
 #include <WiFiClient.h>
+#include <FS.h>
+#include <testOTA.h>
 
 // config static IP
 IPAddress local_IP(192, 168, 1, 33);
@@ -64,12 +70,13 @@ void setup() {
   {
    Serial.println("Failed to subscribe to ");
   }
-  
+    PyrOTA.initOTA();
 }
 
 void loop() {
   // put your main code here, to run repeatedly:
   mqttClient.loop();
+  PyrOTA.loopOTA();
 }
 
 
@@ -101,7 +108,7 @@ void mqttCallback(char *topic, uint8_t *payload, unsigned int length)
     DynamicJsonDocument jsonBufferACK(1024);
     JsonObject msgACK = jsonBufferACK.to<JsonObject>();
     //status of each string
-    msgACK["cmd"] = "on"; //relay button
+    msgACK["output"] = true; //relay button
     msgACK["input_relay"] = true;
     msgACK["input_emergency"] = true; //emergency button
 
