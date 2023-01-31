@@ -101,10 +101,9 @@ void mqttCallback(char *topic, uint8_t *payload, unsigned int length)
     DynamicJsonDocument jsonBufferACK(1024);
     JsonObject msgACK = jsonBufferACK.to<JsonObject>();
     //status of each string
-    msgACK["in_0"] = true; //relay button
-    msgACK["out_0"] = true;
-    msgACK["in_1"] = true; //emergency button
-    msgACK["out_1"] = true;
+    msgACK["cmd"] = "on"; //relay button
+    msgACK["input_relay"] = true;
+    msgACK["input_emergency"] = true; //emergency button
 
     String strACK;
     serializeJson(msgACK, strACK);
